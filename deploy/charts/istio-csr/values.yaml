@@ -39,6 +39,9 @@ app:
         scrapeTimeout: 5s
         labels: {}
 
+  # -- If enabled, cluster roles are not created for namespace-scoped resources.
+  multiTenantDeployment: false
+
   readinessProbe:
     # -- Container port to expose istio-csr HTTP readiness probe on default network interface.
     port: 6060
@@ -132,6 +135,8 @@ app:
     leaderElectionNamespace: istio-system
     # -- (string) If set, limit where istio-csr creates configmaps with root ca certificates. If unset, configmap created in ALL namespaces. Example: maistra.io/member-of=istio-system
     configmapNamespaceSelector:
+    # -- List of namespaces in which config map istio-ca-root-cert will be created.
+    allowedNamespaces: []
 
 # -- Optional extra volumes. Useful for mounting custom root CAs
 volumes: []

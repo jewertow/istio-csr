@@ -1,0 +1,18 @@
+{{- if .Values.app.controller.multiTenantDeployment }}
+{{- range $namespace := .Values.app.controller.allowedNamespaces }}
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+{{ include "cert-manager-istio-csr.labels" $ | indent 4 }}
+  name: {{ include "cert-manager-istio-csr.name" $ }}-configmaps
+  namespace: {{ $namespace }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - "configmaps"
+  verbs: ["get", "list", "create", "update", "watch"]
+{{- end }}
+{{- end }}

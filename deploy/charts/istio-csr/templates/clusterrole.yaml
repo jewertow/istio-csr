@@ -3,13 +3,19 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
 {{ include "cert-manager-istio-csr.labels" . | indent 4 }}
+{{- if not .Values.app.controller.multiTenantDeployment }}
   name: {{ include "cert-manager-istio-csr.name" . }}
+{{- else }}
+  name: {{ .Release.Name }}
+{{- end }}
 rules:
+{{- if not .Values.app.controller.allowedNamespaces }}
 - apiGroups:
   - ""
   resources:
   - "configmaps"
   verbs: ["get", "list", "create", "update", "watch"]
+{{- end }}
 - apiGroups:
   - ""
   resources:
